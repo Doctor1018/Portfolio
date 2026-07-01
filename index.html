@@ -514,20 +514,26 @@
             <div class="form-row">
               <div class="form-group">
                 <label for="form-name">Name</label>
-                <input type="text" id="form-name" placeholder="John Doe" required>
+                <input type="text" id="form-name" name="name" placeholder="John Doe" required>
               </div>
               <div class="form-group">
                 <label for="form-email">Email</label>
-                <input type="email" id="form-email" placeholder="john@example.com" required>
+                <input type="email" id="form-email" name="email" placeholder="john@example.com" required>
+              </div>
+            </div>
+            <div class="form-row">
+              <div class="form-group">
+                <label for="form-phone">Phone Number (Optional)</label>
+                <input type="tel" id="form-phone" name="phone" placeholder="+91 92074 XXXXX">
+              </div>
+              <div class="form-group">
+                <label for="form-subject">Subject (Optional)</label>
+                <input type="text" id="form-subject" name="subject" placeholder="Feedback / Suggestion">
               </div>
             </div>
             <div class="form-group">
-              <label for="form-subject">Subject</label>
-              <input type="text" id="form-subject" placeholder="Project Discussion" required>
-            </div>
-            <div class="form-group">
-              <label for="form-message">Message</label>
-              <textarea id="form-message" rows="5" placeholder="Let's build something beautiful..." required></textarea>
+              <label for="form-message">Feedback, Suggestions or Details</label>
+              <textarea id="form-message" name="message" rows="5" placeholder="Share your suggestions, feedback, or project details..." required></textarea>
             </div>
             
             <button type="submit" class="btn btn-primary btn-submit" id="form-submit-btn">

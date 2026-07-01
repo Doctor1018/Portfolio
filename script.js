@@ -301,37 +301,64 @@ function initContactForm() {
     submitBtn.innerHTML = `Sending... <i class="fa-solid fa-circle-notch fa-spin"></i>`;
     submitBtn.disabled = true;
 
-    // Simulate sending message (since it's a static template)
-    setTimeout(() => {
-      try {
-        const nameVal = document.getElementById('form-name').value;
-        const emailVal = document.getElementById('form-email').value;
+    // Get input values
+    const nameVal = document.getElementById('form-name').value.trim();
+    const emailVal = document.getElementById('form-email').value.trim();
+    const phoneVal = document.getElementById('form-phone').value.trim();
+    const subjectVal = document.getElementById('form-subject').value.trim() || 'Portfolio Feedback / Inquiry';
+    const messageVal = document.getElementById('form-message').value.trim();
 
-        // Simple validation check
-        if (!nameVal || !emailVal) {
-          throw new Error("Missing required fields.");
-        }
+    // Prepare JSON payload for FormSubmit AJAX
+    const payload = {
+      name: nameVal,
+      email: emailVal,
+      message: messageVal,
+      _captcha: "false",
+      _template: "table"
+    };
 
-        // Show Toast Notification
-        toast.className = 'form-toast success';
-        toast.innerHTML = `<i class="fa-solid fa-circle-check"></i> Thank you, ${nameVal}! Your message has been sent successfully.`;
-        
-        // Reset form
-        form.reset();
-      } catch (err) {
-        toast.className = 'form-toast error';
-        toast.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> Error sending message. Please check all details.`;
-      } finally {
-        // Reset button
-        submitBtn.innerHTML = originalText;
-        submitBtn.disabled = false;
+    // Add optional fields if provided
+    if (phoneVal) {
+      payload.phone = phoneVal;
+    }
+    if (subjectVal) {
+      payload._subject = subjectVal;
+    }
 
-        // Auto-remove toast alert
-        setTimeout(() => {
-          toast.style.display = 'none';
-          toast.className = 'form-toast';
-        }, 5000);
+    fetch('https://formsubmit.co/ajax/harisankarg1018@gmail.com', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Accept': 'application/json'
+      },
+      body: JSON.stringify(payload)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
       }
-    }, 1500); // 1.5s simulated network delay
+      return response.json();
+    })
+    .then(data => {
+      // Show Toast Notification
+      toast.className = 'form-toast success';
+      toast.innerHTML = `<i class="fa-solid fa-circle-check"></i> Thank you, ${nameVal}! Your message has been sent.`;
+      form.reset();
+    })
+    .catch(err => {
+      console.error('Error submitting form:', err);
+      toast.className = 'form-toast error';
+      toast.innerHTML = `<i class="fa-solid fa-circle-exclamation"></i> Error sending message. Please try again later.`;
+    })
+    .finally(() => {
+      // Reset button
+      submitBtn.innerHTML = originalText;
+      submitBtn.disabled = false;
+
+      // Auto-remove toast alert
+      setTimeout(() => {
+        toast.className = 'form-toast';
+      }, 5000);
+    });
   });
 }
